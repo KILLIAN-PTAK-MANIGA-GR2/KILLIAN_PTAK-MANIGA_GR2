@@ -1,0 +1,208 @@
+/* Couleur de fond pour toute la page */
+body {
+    background-color: #f0f0f0; /* Gris clair */
+    font-family: 'Poppins', sans-serif; /* Police Poppins */
+    margin: 0;
+    padding: 0;
+}
+
+/* Couleur de fond pour l'en-tête */
+header {
+    background-color: #333; /* Gris foncé */
+    color: #fff; /* Texte blanc */
+    padding: 1em;
+    text-align: center;
+}
+
+/* Style pour la barre de navigation (navigation) */
+nav {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Style de base pour les liens de navigation */
+nav a {
+    color: #fff;
+    background-color: #007bff; /* Bleu Nintendo Wii */
+    padding: 10px 20px;
+    margin: 0 10px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+    font-size: 1.2em;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+/* Effet de surbrillance et de mise en avant */
+nav a:hover {
+    transform: scale(1.1); /* Agrandit légèrement le bouton */
+    box-shadow: 0px 0px 15px rgba(0, 123, 255, 0.6); /* Ajoute une lueur autour du bouton */
+    background-color: #0056b3; /* Change la couleur du bouton pour un effet dynamique */
+}
+
+/* Couleur de fond pour le contenu principal */
+main {
+    background-color: #ffffff; /* Blanc */
+    color: #333; /* Texte gris foncé */
+    padding: 2em;
+    border-radius: 8px;
+    margin: 20px auto;
+    width: 80%;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Style de base pour le pied de page */
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 1em;
+    text-align: center;
+}
+
+/* Icones de réseaux sociaux */
+.wrapper {
+    background-color: transparent;
+    display: flex;
+    justify-content: center; /* Centre les icônes horizontalement */
+    align-items: center;     /* Centre les icônes verticalement */
+    margin-top: 4px;         /* Espace au-dessus des icônes */
+    list-style: none;
+    padding: 0;
+    flex-wrap: wrap;         /* Permet aux icônes de se répartir sur plusieurs lignes si nécessaire */
+}
+
+/* Style de base des icônes */
+.wrapper .icon {
+    position: relative;
+    background: #fff;             /* Fond blanc par défaut pour les icônes */
+    border-radius: 7%;           /* forme*/
+    padding: 15px;
+    margin: 10px;
+    width: 7px;                  /* Largeur uniforme des icônes */
+    height: 45px;                 /* Hauteur uniforme des icônes */
+    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 10px rgba(230, 196, 196, 0.1); /* Ombre légère */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Transition de fond et d'échelle */
+}
+
+/* Effet au survol pour chaque icône spécifique */
+.wrapper .facebook:hover {
+    background-color: #1877F2;
+}
+
+.wrapper .youtube:hover {
+    background-color: #CD201F;
+}
+
+.wrapper .tiktok:hover {
+    background-color: #7a21b6;
+}
+
+.wrapper .instagram:hover {
+    background-color: #ff8000;
+}
+
+/* Effet d'agrandissement au survol de chaque icône */
+.wrapper .icon:hover {
+    transform: scale(1.1); /* Agrandit légèrement l'icône au survol */
+}
+/* Effet de clic pour réduire la taille brièvement */
+.wrapper .icon:active {
+    transform: scale(0.95); /* Réduit légèrement l'icône quand on clique dessus */
+}
+video {
+    width: 20vw; /* 80 % de la largeur de la fenêtre */
+    height: 35vh; /* 45 % de la hauteur de la fenêtre */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+#game-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+}
+
+#player {
+    background-color: red;
+}
+
+#enemy {
+    background-color: blue;
+}
+
+#fragment {
+    background-color: green;
+}
+
+#pause-btn, #restart-btn {
+    margin-top: 20px;
+}
+
+
+/* Petits appareils (smartphones) */
+@media (max-width: 576px) {
+    body {
+      font-size: 14px;
+      padding: 10px;
+    }
+    .container {
+      width: 100%;
+      margin: auto;
+    }
+  }
+  
+  /* Moyens appareils (tablettes portrait) */
+  @media (min-width: 577px) and (max-width: 768px) {
+    body {
+      font-size: 16px;
+      padding: 15px;
+    }
+    .container {
+      width: 90%;
+      margin: auto;
+    }
+  }
+  
+  /* Tablettes en mode paysage ou petits laptops */
+  @media (min-width: 769px) and (max-width: 992px) {
+    body {
+      font-size: 18px;
+      padding: 20px;
+    }
+    .container {
+      width: 80%;
+      margin: auto;
+    }
+  }
+  
+  /* Laptops et desktops */
+  @media (min-width: 993px) and (max-width: 1200px) {
+    body {
+      font-size: 20px;
+      padding: 25px;
+    }
+    .container {
+      width: 75%;
+      margin: auto;
+    }
+  }
+  
+  /* Grands écrans */
+  @media (min-width: 1201px) {
+    body {
+      font-size: 22px;
+      padding: 30px;
+    }
+    .container {
+      width: 70%;
+      margin: auto;
+    }
+  }

@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - PORTFOLIO</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>PORTFOLIO</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Invaders</title>
+    <style>
+        /* Style de base pour le corps de la page */
+        body { 
+            margin: 100; 
+            overflow-y: auto; 
+            font-family: Arial, sans-serif; 
+            display: flex; 
+            flex-direction: column; /* Affiche tout en colonne */
+            align-items: center; 
+            height: 100vh; 
+        }
+
+        /* Style pour la barre d'infos */
+        .info-bar {
+            display: flex;
+            flex-direction: row; /* Affiche les éléments horizontalement */
+            justify-content: space-around;
+            width: 100%;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+        }
+
+        #controls {
+            margin-top: 20px;
+            margin-bottom: 4px;
+        }
+
+        #gameCanvas {
+            border: 1px solid black;
+            width: 50%; /* Ajuste la largeur à 100% de l'écran */
+            height: calc(70vh - 140px); /* Ajuste la hauteur en fonction de la hauteur de l'écran moins la barre d'infos et les contrôles */
+            margin-bottom: 50px; /* Ajoute une marge de 50px en bas */
+            box-sizing: border-box;
+            padding-bottom: 0px;
+
+            /* Ajoutez ces lignes pour l'image de fond */
+            background-image: url('espace vide.png'); /* Remplacez par le chemin de votre image */
+            background-size: cover; /* L'image couvrira toute la surface */
+            background-position: center; /* Centrer l'image */
+            background-repeat: no-repeat; /* Empêche la répétition de l'image */
+        }
+        #gameContainer {
+            width: 100%;
+            height: calc(100vh - 140px); /* Ajuste la hauteur en fonction de la hauteur de l'écran moins la barre d'infos, les contrôles et la marge */
+            padding-bottom: 50px; /* Ajoute une marge de 50px en bas */
+            box-sizing: border-box; /* Inclut le padding dans la hauteur totale */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="info-bar">
+        <div id="score">Score: 0</div>
+        <div id="lives">Vies: 3</div>
+        <div id="enemiesLeft">Ennemis: 0</div>
+        <div id="time">Temps: 0s</div>
+    </div>
+    <div id="controls">
+        <button id="startButton">Commencer</button>
+        <button id="stopButton">Arrêter</button>
+        <button id="restartButton">Recommencer</button>
+    </div>
+    <div id="gameContainer">
+        <canvas id="gameCanvas"></canvas>
+    </div>
+
+
+
+
+
+
+    
+  <script>
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+// Variables du joueur, ennemis et balles
+const player = { x: 0, y: 0, width: 50, height: 50, speed: 5, dx: 0, dy: 0, lives: 3 };
+const bullets = [];
+const enemyBullets = [];
+const enemies = [];
+let score = 0;
+let gameTime = 0;
+let enemySpeedIncrement = 1;
+let isGameRunning = false;
+let gameInterval;
+let enemySpawnInterval = 5000;
+
+// Variables de taille de base
+const baseEnemyWidth = 40;
+const baseEnemyHeight = 40;
+const basePlayerWidth = 50;
+const basePlayerHeight = 50;
+
+// Ajuste la taille du canvas en fonction de la fenêtre
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    adaptGameElements();
+}
+
+// Calcul du facteur d'échelle basé sur la largeur du canvas
+function getScaleFactor() {
+    const referenceWidth = 800; // Largeur de référence pour l'échelle
+    const scaleFactor = Math.min(canvas.width / referenceWidth, canvas.height / referenceWidth);
+    return Math.max(scaleFactor, 0.5); // Limite le facteur d'échelle minimum à 0.5 pour que les éléments ne deviennent pas trop petits
+}
+
+// Adapter les dimensions du joueur
+function adaptPlayer() {
+    const scaleFactor = getScaleFactor();
+    player.width = basePlayerWidth * scaleFactor;
+    player.height = basePlayerHeight * scaleFactor;
+    player.speed = 5 * scaleFactor; // Ajuster la vitesse en fonction du facteur d'échelle
+    player.x = canvas.width / 2 - player.width / 2;
+    player.y = canvas.height - player.height - 10;
+}
+
+// Adapter les dimensions des ennemis
+function adaptEnemies() {
+    const scaleFactor = getScaleFactor();
+    enemies.forEach(enemy => {
+        enemy.width = baseEnemyWidth * scaleFactor;
+        enemy.height = baseEnemyHeight * scaleFactor;
+        enemy.dy = Math.max(1, enemySpeedIncrement * scaleFactor); // Ajuster la vitesse en fonction du facteur d'échelle
+    });
+}
+
+// Adapter les dimensions des balles
+function adaptBullets() {
+    const scaleFactor = getScaleFactor();
+    bullets.forEach(bullet => {
+        bullet.width = 5 * scaleFactor;
+        bullet.height = 10 * scaleFactor;
+        bullet.speed = 7 * scaleFactor;
+    });
+
+    enemyBullets.forEach(bullet => {
+        bullet.width = 5 * scaleFactor;
+        bullet.height = 10 * scaleFactor;
+        bullet.speed = 5 * scaleFactor;
+    });
+}
+
+const playerFrames = [
+    new Image(), // Frame 1
+    new Image(), // Frame 2
+    new Image(), // Frame 3
+    // Ajoutez plus de frames si nécessaire
+];
+
+playerFrames[0].src = 'vaiseau player principale 1.png'; // Remplacer avec le chemin de votre image de frame
+playerFrames[1].src = 'vaiseau player principale 1.png';
+playerFrames[2].src = 'vaiseau player flame2.png';
+
+let currentFrame = 0;
+let frameRate = 0.1; // Fréquence des frames par seconde
+
+// Fonction pour dessiner le joueur avec l'image
+function drawPlayer() {
+    const scaleFactor = getScaleFactor(); // Récupère le facteur d'échelle
+    const imageWidth = 130 * scaleFactor;  // Applique l'échelle à la largeur de l'image
+    const imageHeight = 130 * scaleFactor; // Applique l'échelle à la hauteur de l'image
+
+    const frameIndex = Math.floor(currentFrame); // Récupère l'index de la frame actuelle
+    ctx.drawImage(playerFrames[frameIndex], player.x, player.y, imageWidth, imageHeight);
+}
+
+// Mettre à jour les frames de l'animation du joueur
+function updatePlayerFrame() {
+    currentFrame += frameRate;
+    if (currentFrame >= playerFrames.length) {
+        currentFrame = 0; // Redémarre l'animation
+    }
+
+    drawPlayer();
+}
+
+// Animation principale
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    updatePlayerFrame();
+    requestAnimationFrame(animate);
+}
+
+// Démarrer l'animation
+animate();
+
+
+
+// Dessiner les balles du joueur avec forme arrondie
+function drawBullets() {
+    ctx.fillStyle = 'blue'; // Choisir la couleur de la balle
+    bullets.forEach(bullet => {
+        const radius = bullet.width / 2;  // Le rayon est la moitié de la largeur
+        const centerX = bullet.x + radius;  // Position x du centre de la balle
+        const centerY = bullet.y + radius;  // Position y du centre de la balle
+
+        // Dessiner un cercle pour la balle
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);  // Crée un cercle complet
+        ctx.fill();
+    });
+}
+
+
+// Dessiner les balles des ennemis
+function drawEnemyBullets() {
+    ctx.fillStyle = 'purple';
+    enemyBullets.forEach(bullet => {
+        ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+    });
+}
+
+const enemyFrames = [
+    new Image(),
+    new Image(),
+    new Image(),
+    new Image(),
+    new Image(),
+];
+
+enemyFrames[0].src = 'vaiseau spacial ennemie principale.png';
+enemyFrames[1].src = 'vaiseau spacial ennemie principale.png';
+enemyFrames[2].src = 'vaiseau spacial ennemie principale.png';
+enemyFrames[3].src = 'vaiseau spacial ennemie principale.png';
+enemyFrames[4].src = 'vaiseau spacial ennemie flame.png';
+
+enemyFrames.forEach((image, index) => {
+    image.onload = () => console.log(`Image ennemie ${index + 1} chargée avec succès.`);
+    image.onerror = () => console.error(`Impossible de charger l’image ennemie ${index + 1}.`);
+});
+
+enemyFrames[0].src = 'vaiseau spacial ennemie principale.png';
+enemyFrames[0].onerror = () => {
+    console.error('Impossible de charger l’image ennemie 1 : vaiseau spacial ennemie principale.png');
+};
+enemyFrames[0].onload = () => {
+    console.log('Image ennemie 1 chargée avec succès.');
+};
+enemyFrames[1].onload = () => {
+    console.log('Image ennemie 2 chargée avec succès.');
+};
+
+function drawEnemies() {
+    enemies.forEach((enemy) => {
+        const scaleFactor = getScaleFactor(); // Récupérer le facteur d'échelle actuel
+        const imageWidth = 85 * scaleFactor;  // Applique l'échelle à la largeur de l'image
+        const imageHeight = 85 * scaleFactor;  
+
+        // Utiliser une image aléatoire parmi les images d'ennemis (ou choisir une image spécifique selon l'ennemi)
+        const frameIndex = Math.floor(Math.random() * enemyFrames.length); // Choisir une image aléatoire
+        ctx.drawImage(enemyFrames[frameIndex], enemy.x, enemy.y, imageWidth, imageHeight);
+    });
+}
+function createEnemy() {
+    const scaleFactor = getScaleFactor(); // Obtenir le facteur d'échelle actuel
+    const enemyWidth = baseEnemyWidth * scaleFactor; // Calculer la largeur de l'ennemi avec l'échelle
+    const enemyHeight = baseEnemyHeight * scaleFactor; // Calculer la hauteur de l'ennemi avec l'échelle
+
+    const x = Math.random() * (canvas.width - enemyWidth); // Position x aléatoire
+    const y = -enemyHeight; // Position y initiale au-dessus du canvas
+
+    // Créer un nouvel ennemi
+    enemies.push({ x, y, width: enemyWidth, height: enemyHeight, dx: 0, dy: Math.max(1, enemySpeedIncrement * scaleFactor) });
+    document.getElementById('enemiesLeft').innerText = `Ennemis: ${enemies.length}`;
+    enemySpeedIncrement += 0.1; // Augmenter la vitesse des ennemis avec le temps
+}
+
+
+// Mouvements des éléments
+function movePlayer() {
+    player.x += player.dx;
+    player.y += player.dy;
+
+    // Garder le joueur à l'intérieur du canvas
+    if (player.x < 0) player.x = 0;
+    if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
+    if (player.y < 0) player.y = 0;
+    if (player.y + player.height > canvas.height) player.y = canvas.height - player.height;
+}
+
+function moveBullets() {
+    bullets.forEach((bullet, index) => {
+        bullet.y -= bullet.speed;  // Déplacement de la balle vers le haut
+        if (bullet.y < 0) bullets.splice(index, 1);  // Supprimer la balle si elle sort de l'écran
+    });
+}
+
+function moveEnemyBullets() {
+    enemyBullets.forEach((bullet, index) => {
+        bullet.y += bullet.speed;
+        if (bullet.y > canvas.height) enemyBullets.splice(index, 1);
+    });
+    
+}
+
+
+// Mouvements des ennemis
+function moveEnemies() {
+    enemies.forEach((enemy, index) => {
+        enemy.y += enemy.dy;
+
+        // Calculer la largeur de l'image de l'ennemi avec l'échelle
+        const scaleFactor = getScaleFactor();
+        const enemyWidth = baseEnemyWidth * scaleFactor;  // Largeur de l'ennemi avec l'échelle
+        const enemyHeight = baseEnemyHeight * scaleFactor;  // Hauteur de l'ennemi avec l'échelle
+
+        // Les ennemis tirent aléatoirement
+        if (Math.random() < 0.01) {
+            // Calculer la largeur de l'image de l'ennemi avec l'échelle
+            const enemyImageWidth = enemyWidth;  // La largeur de l'image est égale à celle de l'ennemi redimensionné
+
+            // Calculer le x pour centrer la balle par rapport à l'ennemi
+            const bulletWidth = 10 * scaleFactor;  // Largeur de la balle ennemie
+            const bulletHeight = 10 * scaleFactor;  // Hauteur de la balle ennemie
+
+            // Calculer la position x de la balle centrée par rapport à l'image de l'ennemi
+            const centerX = enemy.x + (enemyImageWidth - bulletWidth)+15;  // Centrer horizontalement la balle
+
+            const bulletY = enemy.y + enemyHeight;  // Positionner la balle juste en dessous de l'ennemi
+
+            // Ajouter la balle ennemie
+            enemyBullets.push({ 
+                x: centerX,  // Position x centrée
+                y: bulletY,   // Position y juste en dessous de l'ennemi
+                width: bulletWidth,  // Largeur de la balle
+                height: bulletHeight,  // Hauteur de la balle
+                speed: 5 * scaleFactor  // Vitesse de la balle ennemie
+            });
+        }
+
+        // Supprimer l'ennemi s'il sort de l'écran
+        if (enemy.y > canvas.height) enemies.splice(index, 1);
+    });
+}
+
+
+
+
+// Animation principale
+function update() {
+    if (!isGameRunning) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawPlayer();
+    drawBullets();
+    drawEnemyBullets();
+    drawEnemies();
+    movePlayer();
+    moveBullets();
+    moveEnemyBullets();
+    moveEnemies();
+    detectCollisions();
+    requestAnimationFrame(update);
+}
+
+// Détecter les collisions
+function detectCollisions() {
+    bullets.forEach((bullet, bulletIndex) => {
+        enemies.forEach((enemy, enemyIndex) => {
+            if (
+                bullet.x < enemy.x + enemy.width &&
+                bullet.x + bullet.width > enemy.x &&
+                bullet.y < enemy.y + enemy.height &&
+                bullet.y + bullet.height > enemy.y
+            ) {
+                setTimeout(() => {
+                    bullets.splice(bulletIndex, 1);
+                    enemies.splice(enemyIndex, 1);
+                    score += 10;
+                    document.getElementById('score').innerText = `Score: ${score}`;
+                    document.getElementById('enemiesLeft').innerText = `Ennemis: ${enemies.length}`;
+                }, 0);
+            }
+        });
+    });
+
+    enemyBullets.forEach((bullet, bulletIndex) => {
+        if (
+            bullet.x < player.x + player.width &&
+            bullet.x + bullet.width > player.x &&
+            bullet.y < player.y + player.height &&
+            bullet.y + bullet.height > player.y
+        ) {
+            setTimeout(() => {
+                enemyBullets.splice(bulletIndex, 1);
+                player.lives -= 1;
+                document.getElementById('lives').innerText = `Vies: ${player.lives}`;
+                if (player.lives <= 0) {
+                    alert('Game Over!');
+                    stopGame();
+                }
+                
+            }, 0);
+        }
+    });
+}
+
+// Contrôles du jeu
+function startGame() {
+    if (!isGameRunning) {
+        isGameRunning = true;
+        gameInterval = setInterval(() => {
+            createEnemy();
+            gameTime += 1;
+            document.getElementById('time').innerText = `Temps: ${gameTime}s`;
+        }, enemySpawnInterval);
+        update();
+    }
+}
+
+function stopGame() {
+    isGameRunning = false;
+    clearInterval(gameInterval);
+}
+
+function restartGame() {
+    document.location.reload();
+}
+
+// Calculer la largeur de l'image du joueur redimensionnée
+function getPlayerImageWidth() {
+    const scaleFactor = getScaleFactor();  // Récupère le facteur d'échelle actuel
+    const imageWidth = 130 * scaleFactor;  // Largeur de l'image du joueur redimensionnée
+    return imageWidth;
+}
+
+// Écouteurs d'événements
+document.addEventListener('keydown', e => {
+    if (e.key === 'd') player.dx = player.speed;
+    if (e.key === 'q') player.dx = -player.speed;
+    if (e.key === 'z') player.dy = -player.speed;
+    if (e.key === 's') player.dy = player.speed;
+    // Tirer des balles lorsque la barre d'espace est pressée
+    if (e.key === ' ') {
+        // Créer une balle pour le joueur avec une taille augmentée
+        const scaleFactor = getScaleFactor();
+        const bulletWidth = 15 * scaleFactor;  // Largeur de la balle, augmenté (exemple: 12)
+        const bulletHeight = 15 * scaleFactor;  // Hauteur de la balle, augmentée (c'est un cercle donc hauteur = largeur)
+
+        // Calculer le x pour centrer la balle par rapport à l'image du joueur
+        const playerImageWidth = getPlayerImageWidth();
+        const centerX = player.x + (playerImageWidth - bulletWidth) / 2;  // Centrer la balle
+
+        bullets.push({
+            x: centerX,  // Position x centrée
+            y: player.y,  // Position y juste au-dessus du joueur
+            width: bulletWidth,  // Largeur de la balle
+            height: bulletHeight,  // Hauteur de la balle
+            speed: 7 * scaleFactor  // Vitesse de la balle
+        });
+    }
+});
+
+document.addEventListener('keyup', e => {
+    if (['d', 'q'].includes(e.key)) player.dx = 0;
+    if (['z', 's'].includes(e.key)) player.dy = 0;
+});
+
+document.addEventListener('keyup', e => {
+    if (['d', 'q'].includes(e.key)) player.dx = 0;
+    if (['z', 's'].includes(e.key)) player.dy = 0;
+});
+
+document.getElementById('startButton').addEventListener('click', startGame);
+document.getElementById('stopButton').addEventListener('click', stopGame);
+document.getElementById('restartButton').addEventListener('click', restartGame);
+
+// Initialisation du canvas et des éléments
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+    </script>
+</body>
+<main id="aboutUs">
+    <h2>À propos de nous</h2>
+    <p>This page contains information about us.</p>
+</main>
+
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - PORTFOLIO</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>PORTFOLIO</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Image Centered with Save Button</title>
+        <style>
+            /* Centrer l'image et le bouton */
+            .container {
+                display: flex;
+                justify-content: center; /* Centrer horizontalement */
+                align-items: center; /* Centrer verticalement */
+                height: 50vh; /* Hauteur de la fenêtre */
+                flex-direction: column;
+            }
+    
+            /* Style du bouton */
+            .save-button {
+                margin-top: 20px;
+                padding: 10px 20px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 1em;
+            }
+    
+            .save-button:hover {
+                background-color: #0056b3;
+            }
+    
+            /* Style de l'image */
+            img {
+                max-width: 100%;
+                height: auto;
+                border-radius: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div><video src="C:\Users\killi\Downloads\IIM HTML gr2\0001-0080.mp4" autoplay loop muted>            
+        </video>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Video Crop</title>
+            <style>
+                /* Ajuster la taille et rogner la vidéo */
+                video {
+                    width: 100%;          /* Largeur du conteneur */
+                    height: 400px;        /* Hauteur fixe pour rognage */
+                    object-fit: cover;    /* Remplit et rogne la vidéo */
+                }
+            </style>
+        </head> 
+        </div>
+        <head>
+            <title>Galerie Scrollable à la Netflix</title>
+            <style>
+              /* Conteneur central de la galerie */
+              .gallery-container {
+                width: 80%;               /* Largeur de la galerie, tu peux ajuster */
+                max-width: auto;        /* Largeur maximale pour éviter que ce soit trop large */
+                margin: 10px auto;        /* Centrer horizontalement et ajouter un peu de marge en haut */
+                overflow: hidden;         /* Cache tout ce qui dépasse du conteneur */
+              }
+          
+              /* Conteneur des images à scroller horizontalement */
+              .scroll-gallery {
+                display: flex;
+                overflow-x: scroll;       /* Permet le scroll horizontal */
+                padding: 20px 0;          /* Un peu d'espace au-dessus et en dessous */
+                scroll-behavior: smooth;  /* Pour un défilement fluide */
+              }
+          
+              /* Style pour chaque image */
+              .scroll-gallery img {
+                width: 400px;             /* Largeur de chaque image (ajuste selon tes besoins) */
+                height: auto;             /* Garde la proportion des images */
+                margin-right: 15px;       /* Espace entre les images */
+                border-radius: 10px;      /* Coins arrondis pour un effet esthétique */
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);  /* Ombre légère pour chaque image */
+                transition: transform 0.3s ease; /* Animation au survol */
+              }
+          
+              /* Effet de zoom au survol */
+              .scroll-gallery img:hover {
+                transform: scale(1.25);   /* Légère augmentation de taille au survol */
+              }
+          
+              /* Enlever la barre de défilement par défaut pour plus d'esthétique */
+              .scroll-gallery::-webkit-scrollbar {
+                display: none; /* Cacher la barre de défilement */
+              }
+              
+              /* Si tu veux personnaliser la barre de défilement */
+              .scroll-gallery::-webkit-scrollbar {
+                width: 10px;
+              }
+              
+              .scroll-gallery::-webkit-scrollbar-thumb {
+                background: rgba(0, 0, 0, 0.5);  /* Couleur de la barre de défilement */
+                border-radius: 10px;
+              }
+              
+              .scroll-gallery::-webkit-scrollbar-track {
+                background: transparent;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="gallery-container">
+              <div class="scroll-gallery">
+                <img src="drapeau.gif" alt="Image 1">
+                <img src="lumière.gif" alt="Image 2">
+                <img src="Presentation professionnel marketing sobre élégant minimaliste blanc noir.png" alt="Image 3">
+                <img src="personnage.gif" alt="Image 4">
+                <img src="tumblr_2f5bad9adfc461898f0889771a1ceda3_b9f805d2_2048.gif" alt="Image 5">
+                <img src="krilin.jpg" alt="Image 6">
+                <img src="krilin.jpg" alt="Image 7">
+                <!-- Ajoute plus d'images ici -->
+              </div>
+            </div>
+          </body>
+        
+        <div class="container">
+            <!-- Image centrée -->
+            <img id="imageToSave" src="krilin.jpg" alt="image error" width="500" height="auto">
+            
+            <!-- Bouton pour sauvegarder l'image -->
+            <button class="save-button" id="saveButton">Save Image</button>
+        </div>
+    
+        <script>
+            // Fonction pour le télécharger
+            document.getElementById('saveButton').addEventListener('click', function() {
+                // Obtenez l'image
+                var image = document.getElementById('imageToSave');
+    
+                // Création d'un lien temporaire pour le téléchargement
+                var link = document.createElement('a');
+                link.href = image.src;
+                link.download = 'krilin.jpg'; // Le nom de sauvegardée de l'image
+    
+                // Simulez un clic sur le lien
+                link.click();
+            });
+        </script>
+    </body>
+    <main>
+        <h2>Bienvenue sur la page d'accueil</h2>
+        <p>This is the homepage of your website.</p>
+    </main>
+</body>
+</html>
