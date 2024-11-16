@@ -70,7 +70,7 @@
             padding-bottom: 0px;
 
             /* Ajoutez ces lignes pour l'image de fond */
-            background-image: url('espace animated.gif'); /* Remplacez par le chemin de votre image */
+            background-image: url('espace-animated.gif'); /* Remplacez par le chemin de votre image */
             background-size: cover; /* L'image couvrira toute la surface */
             background-position: center; /* Centrer l'image */
             background-repeat: no-repeat; /* Empêche la répétition de l'image */
@@ -111,7 +111,9 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
 // Variables du joueur, ennemis et balles
-const player = { x: 0, y: 0, width: 50, height: 50, speed: 5, dx: 0, dy: 0, lives: 3 };
+const player = { x: canvas.width / 2 - 25, y: canvas.height - 60, width: 50, height: 50, collisionWidth: 130, collisionHeight: 130, speed: 5, dx: 0, dy: 0, lives: 3, image: new Image() };
+player.collisionWidth = 130;  // Augmente la largeur de la collision
+player.collisionHeight = 130; // Ajuste la hauteur de la collision
 const bullets = [];
 const enemyBullets = [];
 const enemies = [];
@@ -121,6 +123,19 @@ let enemySpeedIncrement = 1;
 let isGameRunning = false;
 let gameInterval;
 let enemySpawnInterval = 5000;
+// Lorsque tu dessines la collision, assure-toi qu'elle est bien centrée
+function drawPlayerCollision() {
+    const scaleFactor = getScaleFactor();  // Récupérer le facteur d'échelle
+    const imageWidth = 130 * scaleFactor;  // Appliquer l'échelle à la largeur de l'image
+    const imageHeight = 130 * scaleFactor; // Appliquer l'échelle à la hauteur de l'image
+
+    // Calculer la position de la collision (sans décalage supplémentaire)
+    const centeredX = player.x; // La position X du joueur
+    const centeredY = player.y; // La position Y du joueur
+
+    // Dessiner la zone de collision (la boîte rouge)
+
+}
 
 // Variables de taille de base
 const baseEnemyWidth = 40;
@@ -147,9 +162,16 @@ function adaptPlayer() {
     const scaleFactor = getScaleFactor();
     player.width = basePlayerWidth * scaleFactor;
     player.height = basePlayerHeight * scaleFactor;
-    player.speed = 5 * scaleFactor; // Ajuster la vitesse en fonction du facteur d'échelle
+    player.speed = 5 * scaleFactor; // Ajuste la vitesse en fonction du facteur d'échelle
     player.x = canvas.width / 2 - player.width / 2;
     player.y = canvas.height - player.height - 10;
+
+    // Ajuste les dimensions de la zone de collision pour correspondre à la taille de l'image
+    const imageWidth = 130 * scaleFactor;
+    const imageHeight = 130 * scaleFactor;
+
+    player.collisionWidth = imageWidth;
+    player.collisionHeight = imageHeight;
 }
 
 // Adapter les dimensions des ennemis
@@ -194,12 +216,19 @@ let frameRate = 0.1; // Fréquence des frames par seconde
 
 // Fonction pour dessiner le joueur avec l'image
 function drawPlayer() {
-    const scaleFactor = getScaleFactor(); // Récupère le facteur d'échelle
-    const imageWidth = 130 * scaleFactor;  // Applique l'échelle à la largeur de l'image
-    const imageHeight = 130 * scaleFactor; // Applique l'échelle à la hauteur de l'image
+    const scaleFactor = getScaleFactor();  // Récupérer le facteur d'échelle
+    const imageWidth = 130 * scaleFactor;  // Largeur de l'image du joueur
+    const imageHeight = 130 * scaleFactor; // Hauteur de l'image du joueur
 
-    const frameIndex = Math.floor(currentFrame); // Récupère l'index de la frame actuelle
-    ctx.drawImage(playerFrames[frameIndex], player.x, player.y, imageWidth, imageHeight);
+    const frameIndex = Math.floor(currentFrame);  // Frame actuelle du joueur
+    const centeredX = player.x; // Position X de l'image du joueur
+    const centeredY = player.y; // Position Y de l'image du joueur
+
+    // Dessiner l'image du joueur
+    ctx.drawImage(playerFrames[frameIndex], centeredX, centeredY, imageWidth, imageHeight);
+
+    // Dessiner la zone de collision (pour le débogage)
+    drawPlayerCollision();
 }
 
 // Mettre à jour les frames de l'animation du joueur
@@ -239,6 +268,20 @@ function drawBullets() {
     });
 }
 
+// Fonction pour dessiner la zone de collision de l'ennemi
+function drawEnemyCollision(enemy) {
+    const scaleFactor = getScaleFactor();  // Facteur d'échelle pour redimensionner l'ennemi
+
+    // Calcul des dimensions de l'image redimensionnée
+    const imageWidth = 85 * scaleFactor;
+    const imageHeight = 85 * scaleFactor;
+
+    // Si enemy.x et enemy.y sont le coin supérieur gauche de l'image :
+    const topLeftX = enemy.x;
+    const topLeftY = enemy.y;
+
+    // Dessiner la zone de collision autour de l'ennemi
+}
 
 // Dessiner les balles des ennemis
 function drawEnemyBullets() {
@@ -287,6 +330,7 @@ function drawEnemies() {
         // Utiliser une image aléatoire parmi les images d'ennemis (ou choisir une image spécifique selon l'ennemi)
         const frameIndex = Math.floor(Math.random() * enemyFrames.length); // Choisir une image aléatoire
         ctx.drawImage(enemyFrames[frameIndex], enemy.x, enemy.y, imageWidth, imageHeight);
+    
     });
 }
 function createEnemy() {
@@ -323,48 +367,87 @@ function moveBullets() {
     });
 }
 
+
 function moveEnemyBullets() {
     enemyBullets.forEach((bullet, index) => {
         bullet.y += bullet.speed;
         if (bullet.y > canvas.height) enemyBullets.splice(index, 1);
     });
-    
+
+
+}
+// Vérification de collision avec les ennemis, en prenant en compte la zone de collision correcte
+function checkPlayerEnemyCollision() {
+    enemies.forEach((enemy, index) => {
+        // Vérification de la collision avec la zone de collision
+        if (
+            player.x < enemy.x + enemy.width &&
+            player.x + player.collisionWidth > enemy.x &&
+            player.y < enemy.y + enemy.height &&
+            player.y + player.collisionHeight > enemy.y
+        ) {
+            // Gestion de la collision
+            enemies.splice(index, 1); // Supprime l'ennemi
+            player.lives -= 1;         // Diminuer les vies du joueur
+            document.getElementById('lives').innerText = `Vies: ${player.lives}`;
+            if (player.lives <= 0) {
+                alert('Game Over!');
+                stopGame();
+            }
+        }
+        
+    });
 }
 
+function endGame() {
+    if (player.lives <= 0) {
+        alert('Game Over! Vous avez perdu.');
+        resetGame();
+    } else if (enemies.length === 0) {
+        alert('Félicitations ! Vous avez gagné !');
+        resetGame();
+    }
+}
 
 // Mouvements des ennemis
 function moveEnemies() {
     enemies.forEach((enemy, index) => {
-        enemy.y += enemy.dy;
-
-        // Calculer la largeur de l'image de l'ennemi avec l'échelle
-        const scaleFactor = getScaleFactor();
-        const enemyWidth = baseEnemyWidth * scaleFactor;  // Largeur de l'ennemi avec l'échelle
-        const enemyHeight = baseEnemyHeight * scaleFactor;  // Hauteur de l'ennemi avec l'échelle
+        // Calculer la direction vers le joueur
+        const deltaX = player.x + player.width / 2 - (enemy.x + enemy.width / 2);  // Horizontalement vers le joueur
+        const deltaY = player.y + player.height / 2 - (enemy.y + enemy.height / 2);  // Verticalement vers le joueur
+        
+        // Calculer l'angle pour déterminer la direction du mouvement
+        const angle = Math.atan2(deltaY, deltaX); // L'angle entre l'ennemi et le joueur
+        const speed = 3; // Vitesse de déplacement vers le joueur (ajustable)
+        const downwardSpeed = 1; // Vitesse de descente continue de l'ennemi (ajustable)
+        
+        // Mouvement de l'ennemi
+        enemy.x += Math.cos(angle) * speed;  // Suivi horizontal vers le joueur
+        enemy.y += downwardSpeed;  // Descente continue vers le bas
 
         // Les ennemis tirent aléatoirement
         if (Math.random() < 0.01) {
-            // Calculer la largeur de l'image de l'ennemi avec l'échelle
-            const enemyImageWidth = enemyWidth;  // La largeur de l'image est égale à celle de l'ennemi redimensionné
+            const scaleFactor = getScaleFactor();
+            const enemyImageWidth = enemy.width;  // La largeur de l'image est égale à celle de l'ennemi redimensionné
 
-            // Calculer le x pour centrer la balle par rapport à l'ennemi
-            const bulletWidth = 10 * scaleFactor;  // Largeur de la balle ennemie
-            const bulletHeight = 10 * scaleFactor;  // Hauteur de la balle ennemie
+            // Calculer les dimensions de la balle ennemie
+            const bulletWidth = 10 * scaleFactor;
+            const bulletHeight = 10 * scaleFactor;
 
-            // Calculer la position x de la balle centrée par rapport à l'image de l'ennemi
-            const centerX = enemy.x + (enemyImageWidth - bulletWidth)+15;  // Centrer horizontalement la balle
-
-            const bulletY = enemy.y + enemyHeight;  // Positionner la balle juste en dessous de l'ennemi
+            // Positionner la balle juste en dessous de l'ennemi, centré
+            const centerX = enemy.x + (enemyImageWidth - bulletWidth) / 2;
+            const bulletY = enemy.y + enemy.height;
 
             // Ajouter la balle ennemie
-            enemyBullets.push({ 
-                x: centerX,  // Position x centrée
-                y: bulletY,   // Position y juste en dessous de l'ennemi
-                width: bulletWidth,  // Largeur de la balle
-                height: bulletHeight,  // Hauteur de la balle
-                speed: 5 * scaleFactor  // Vitesse de la balle ennemie
+            enemyBullets.push({
+                x: centerX, // Position x centrée
+                y: bulletY, // Position y juste en dessous de l'ennemi
+                width: bulletWidth,
+                height: bulletHeight,
+                speed: 2 * scaleFactor // Vitesse de la balle ennemie
             });
         }
+
 
         // Supprimer l'ennemi s'il sort de l'écran
         if (enemy.y > canvas.height) enemies.splice(index, 1);
@@ -387,8 +470,10 @@ function update() {
     moveEnemyBullets();
     moveEnemies();
     detectCollisions();
+    checkPlayerEnemyCollision(); // Appel de la vérification des collisions joueur-ennemi
     requestAnimationFrame(update);
 }
+
 
 // Détecter les collisions
 function detectCollisions() {
@@ -403,7 +488,7 @@ function detectCollisions() {
                 setTimeout(() => {
                     bullets.splice(bulletIndex, 1);
                     enemies.splice(enemyIndex, 1);
-                    score += 10;
+                    score += 1;
                     document.getElementById('score').innerText = `Score: ${score}`;
                     document.getElementById('enemiesLeft').innerText = `Ennemis: ${enemies.length}`;
                 }, 0);
@@ -475,16 +560,35 @@ document.addEventListener('keydown', e => {
         const bulletHeight = 15 * scaleFactor;  // Hauteur de la balle, augmentée (c'est un cercle donc hauteur = largeur)
 
         // Calculer le x pour centrer la balle par rapport à l'image du joueur
-        const playerImageWidth = getPlayerImageWidth();
-        const centerX = player.x + (playerImageWidth - bulletWidth) / 2;  // Centrer la balle
+        const playerImageWidth = getPlayerImageWidth(); // Retourne la largeur réelle de l'image
+        const centerX = player.x + (playerImageWidth / 2) - (bulletWidth / 2);
 
         bullets.push({
-            x: centerX,  // Position x centrée
-            y: player.y,  // Position y juste au-dessus du joueur
-            width: bulletWidth,  // Largeur de la balle
-            height: bulletHeight,  // Hauteur de la balle
-            speed: 7 * scaleFactor  // Vitesse de la balle
+            x: centerX,
+            y: player.y,  // Position y (juste au-dessus du joueur)
+            width: bulletWidth,
+            height: bulletHeight,
+            speed: 7 * scaleFactor
         });
+    }
+});
+
+// Charger des sons
+const bulletSound = new Audio('bullet-sound.mp3');
+const enemyHitSound = new Audio('enemy-hit-sound.mp3');
+const gameOverSound = new Audio('game-over-sound.mp3');
+
+// Jouer le son lors d'une action spécifique
+function playSound(sound) {
+    sound.currentTime = 0; // Revenir au début
+    sound.play();
+}
+
+// Exemple : jouer un son lorsque le joueur tire
+document.addEventListener('keydown', e => {
+    if (e.key === ' ') {
+        playSound(bulletSound);
+        // Code existant pour créer la balle
     }
 });
 
