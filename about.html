@@ -107,9 +107,24 @@
 <html lang="fr">
 
 <head>
-    <main id="aboutUs">
-        <h2>Quantum Eclipse</h2>
-    </main>
+    <head>
+        <style>
+            /* Style de base pour le titre h2 */
+            #aboutUs h2 {
+                color: rgb(118, 48, 48); /* Changer la couleur du texte en rouge */
+                font-family: 'Algerian', sans-serif; /* Police de caractères */
+                font-size: 70px; /* Taille du texte */
+                text-align: center; /* Centrer le texte */
+            }
+        </style>
+    </head>
+    <body>
+        <main id="aboutUs">
+            <h2>Quantum Eclipse</h2>
+            <p>Version bêta du jeu</p>
+        </main>
+    </body>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Space Invaders</title>
@@ -165,26 +180,50 @@
     </style>
 </head>
 <body>
-    <div class="info-bar">
-        <div id="score">Score: 0</div>
-        <div id="lives">Vies: 3</div>
-        <div id="enemiesLeft">Ennemis: 0</div>
-        <div id="time">Temps: 0s</div>
-    </div>
-    <div id="controls">
-        <button id="startButton">Commencer</button>
-        <button id="stopButton">Arrêter</button>
-        <button id="restartButton">Recommencer</button>
-    </div>
-    <div id="gameContainer">
-        <canvas id="gameCanvas"></canvas>
-    </div>
-
-
-
-
-
-
+    <head>
+        <style>
+            /* Style de base pour les boutons */
+            #controls button {
+                background-color: red; /* Couleur de fond rouge */
+                color: white; /* Texte en blanc */
+                border: none; /* Enlever la bordure par défaut */
+                padding: 10px 20px; /* Espacement autour du texte */
+                font-size: 16px; /* Taille du texte */
+                cursor: pointer; /* Curseur en forme de main */
+                transition: all 0.3s ease; /* Transition douce pour les effets */
+                border-radius: 5px; /* Coins arrondis */
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre légère */
+            }
+    
+            /* Effet au survol des boutons */
+            #controls button:hover {
+                background-color: darkred; /* Couleur plus foncée au survol */
+                box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Ombre plus forte au survol */
+            }
+    
+            /* Style des boutons au clic (effet d'enfoncement) */
+            #controls button:active {
+                transform: scale(0.98); /* Réduction légère de la taille au clic */
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Ombre réduite */
+            }
+        </style>
+    </head>
+    <body>
+        <div class="info-bar">
+            <div id="score">Score: 0</div>
+            <div id="lives">Vies: 3</div>
+            <div id="enemiesLeft">Ennemis: 0</div>
+            <div id="time">Temps: 0s</div>
+        </div>
+        <div id="controls">
+            <button id="startButton">Commencer</button>
+            <button id="stopButton">Arrêter</button>
+            <button id="restartButton">Recommencer</button>
+        </div>
+        <div id="gameContainer">
+            <canvas id="gameCanvas"></canvas>
+        </div>
+    </body>
     
   <script>
 const canvas = document.getElementById('gameCanvas');
@@ -720,8 +759,15 @@ window.addEventListener('resize', resizeCanvas);
     </script>
 </body>
 <main id="aboutUs">
-    <h2>À propos de nous</h2>
-    <p>This page contains information about us.</p>
+    <p>This page contains information about me.</p>
+    <div class="mrr">
+        <h1>À propos de moi</h1>
+        <p>Bienvenue sur ma page ! Je m'appelle Killian et je suis passionné par le <strong>codding</strong> et <strong>l'animation 3D</strong>, ainsi que par de nombreux autres domaines de la création numérique. J'aime explorer et toucher à tout, qu'il s'agisse de développement web, de programmation ou de nouvelles technologies.</p>
+        <p>Je suis actuellement étudiant à l'école <strong>IIM de Devinci</strong>, où je développe mes compétences et enrichis mon expérience en travaillant sur divers projets.</p>
+        <p>Bien que je vive avec un handicap invisible lié aux troubles DYS (dyslexie, dyspraxie, etc.), cela ne m'empêche pas d'avancer et de poursuivre mes passions avec détermination. Cette expérience m'a appris à surmonter les défis et à toujours donner le meilleur de moi-même.</p>
+        <p>En dehors de mes études, je suis un grand amateur de <strong>jeux vidéo</strong>, <strong>d'informatique</strong> et j'adore regarder des <strong>animés</strong>. Ces passions me poussent à élargir mes connaissances et à explorer de nouvelles techniques et idées créatives.</p>
+        <p>Merci de visiter ma page et n'hésitez pas à me contacter pour discuter de projets ou de collaborations !</p>          
+    </div>
 </main>
 
 </html>
