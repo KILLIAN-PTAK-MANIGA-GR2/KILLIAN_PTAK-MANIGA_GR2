@@ -3,18 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - PORTFOLIO</title>
+    <title>Contact - PORTFOLIO</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo img {
+            display: block;
+            height: 300px;
+            width: auto;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white; /* Choisissez une couleur visible sur la vidéo */
+        }
+
+        /* Vidéo en dessous de la navigation */
+        .video-container {
+            width: 100%;
+            height: 300px; /* Hauteur fixe pour la vidéo */
+            margin-top: 0px; /* Espacement avant la vidéo */
+            margin-bottom: 60px;
+        }
+
+        video {
+            width: 100%; /* La vidéo prend toute la largeur */
+            height: 100%; /* La vidéo prend toute la hauteur du conteneur */
+            object-fit: cover; /* Remplit l'espace sans déformer l'image */
+        }
+
+        /* Ajouter du contenu sous la vidéo (facultatif) */
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
+
+    <!-- En-tête avec logo et navigation -->
     <header>
-        <h1>PORTFOLIO</h1>
+        <div class="logo">
+            <a href="index.html">
+                <img src="port-removebg-preview.png" alt="Logo">
+            </a>
+        </div>
         <nav>
             <a href="index.html">Home</a>
             <a href="about.html">About</a>
             <a href="contact.html">Contact</a>
         </nav>
     </header>
+    <div class="video-container">
+        <video src="C:\Users\killi\Downloads\IIM HTML gr2\0001-0080.mp4" autoplay loop muted></video>
+    </div>
+    <head>
+        <style>
+            /* Ajuster la taille et rogner la vidéo */
+            video {
+                width: 100%;          /* Largeur du conteneur */
+                height: 350px;        /* Hauteur fixe pour rognage */
+                object-fit: cover;    /* Remplit et rogne la vidéo */
+            }
+        </style>
+    </head> 
+    </div>
 </body>
 </html>
 
@@ -27,9 +99,17 @@
 
 
 
+
+
+
+
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
+    <main id="aboutUs">
+        <h2>Quantum Eclipse</h2>
+    </main>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Space Invaders</title>

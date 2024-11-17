@@ -7,14 +7,31 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>PORTFOLIO</h1>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="about.html">About</a>
-            <a href="contact.html">Contact</a>
-        </nav>
-    </header>
+  <header>
+    <div class="logo">
+        <a href="index.html">
+            <img id="gifLogo" src="port_1.gif" alt="Logo" style="height: 300px; width: auto;" onerror="handleError()">
+        </a>
+    </div>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+</header>
+
+<script>
+    function handleError() {
+        console.error("Erreur : le fichier GIF n'a pas pu être chargé.");
+        alert("Le fichier GIF n'a pas pu être chargé. Assurez-vous que le chemin d'accès est correct.");
+    }
+
+    // Remplacer le GIF après un certain temps ( 5 secondes).
+    setTimeout(function() {
+        document.getElementById('gifLogo').src = 'port-removebg-preview.png'; style="height: 200px; width: auto;"  // Remplacer par une image fixe
+    }, 5000);  // 5000ms = 5 secondes
+</script>
+
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -63,7 +80,7 @@
             <style>
                 /* Ajuster la taille et rogner la vidéo */
                 video {
-                    width: 100%;          /* Largeur du conteneur */
+                    width: 103%;          /* Largeur du conteneur */
                     height: 400px;        /* Hauteur fixe pour rognage */
                     object-fit: cover;    /* Remplit et rogne la vidéo */
                 }
@@ -91,8 +108,8 @@
           
               /* Style pour chaque image */
               .scroll-gallery img {
-                width: 400px;             /* Largeur de chaque image (ajuste selon tes besoins) */
-                height: auto;             /* Garde la proportion des images */
+                width: 500px;             /* Largeur de chaque image (ajuste selon tes besoins) */
+                height: 300px;             /* Garde la proportion des images */
                 margin-right: 15px;       /* Espace entre les images */
                 border-radius: 10px;      /* Coins arrondis pour un effet esthétique */
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);  /* Ombre légère pour chaque image */
@@ -131,9 +148,9 @@
                 <img src="lumière.gif" alt="Image 2">
                 <img src="Presentation professionnel marketing sobre élégant minimaliste blanc noir.png" alt="Image 3">
                 <img src="personnage.gif" alt="Image 4">
-                <img src="tumblr_2f5bad9adfc461898f0889771a1ceda3_b9f805d2_2048.gif" alt="Image 5">
-                <img src="krilin.jpg" alt="Image 6">
-                <img src="krilin.jpg" alt="Image 7">
+                <img src="0001-0037.gif" alt="Image 5">
+                <img src="batman suuuper.jpg" alt="Image 6">
+                <img src="lumiere_perso_3D.png" alt="Image 7",>
                 <!-- Ajoute plus d'images ici -->
               </div>
             </div>
@@ -166,6 +183,16 @@
     <main>
         <h2>Bienvenue sur la page d'accueil</h2>
         <p>This is the homepage of your website.</p>
+        <div class="mrr">
+          <h1>À propos de moi</h1>
+          <p>Bienvenue sur ma page ! Je m'appelle Killian et je suis passionné par le <strong>codding</strong> et <strong>l'animation 3D</strong>, ainsi que par de nombreux autres domaines de la création numérique. J'aime explorer et toucher à tout, qu'il s'agisse de développement web, de programmation ou de nouvelles technologies.</p>
+          <p>Je suis actuellement étudiant à l'école <strong>IIM de Devinci</strong>, où je développe mes compétences et enrichis mon expérience en travaillant sur divers projets.</p>
+          <p>Bien que je vive avec un handicap invisible lié aux troubles DYS (dyslexie, dyspraxie, etc.), cela ne m'empêche pas d'avancer et de poursuivre mes passions avec détermination. Cette expérience m'a appris à surmonter les défis et à toujours donner le meilleur de moi-même.</p>
+          <p>En dehors de mes études, je suis un grand amateur de <strong>jeux vidéo</strong>, <strong>d'informatique</strong> et j'adore regarder des <strong>animés</strong>. Ces passions me poussent à élargir mes connaissances et à explorer de nouvelles techniques et idées créatives.</p>
+          <p>Merci de visiter ma page et n'hésitez pas à me contacter pour discuter de projets ou de collaborations !</p>          
+      </div>
     </main>
 </body>
-</html>
+</html> 
+<!-- :,( Je suis désolé, je n'ai pas eu le temps de terminer, j'ai passé trop de temps à développer le jeu -->
+
