@@ -155,7 +155,7 @@ body {
 @media (max-width: 576px) {
   body {
     font-size: 14px;
-    padding: 10px;
+    padding: 0;
   }
   .container {
     width: 100%;
@@ -172,7 +172,7 @@ body {
 @media (min-width: 577px) and (max-width: 768px) {
   body {
     font-size: 16px;
-    padding: 15px;
+    padding: 0;
   }
   .container {
     width: 90%;
@@ -189,7 +189,7 @@ body {
 @media (min-width: 769px) and (max-width: 992px) {
   body {
     font-size: 18px;
-    padding: 20px;
+    padding: O;
   }
   .container {
     width: 80%;
@@ -206,7 +206,7 @@ body {
 @media (min-width: 993px) and (max-width: 1200px) {
   body {
     font-size: 20px;
-    padding: 25px;
+    padding: 0;
   }
   .container {
     width: 75%;
@@ -223,7 +223,7 @@ body {
 @media (min-width: 1201px) {
   body {
     font-size: 22px;
-    padding: 30px;
+    padding: 0px;
   }
   .container {
     width: 70%;
