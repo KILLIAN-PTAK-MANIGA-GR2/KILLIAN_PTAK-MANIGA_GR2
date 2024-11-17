@@ -11,7 +11,7 @@ header {
     background-color: #333; /* Gris foncé */
     color: #fff; /* Texte blanc */
     width: 100%;
-    height: 400px; 
+    height: 40%; 
     justify-content: center;
     align-items: center;
     margin: 0 auto;
@@ -49,7 +49,7 @@ nav a:hover {
 main {
     background-color: #ffffff; /* Blanc */
     color: #333; /* Texte gris foncé */
-    padding: 2em;
+    padding: 1em;
     border-radius: 8px;
     margin: 20px auto;
     width: 80%;
